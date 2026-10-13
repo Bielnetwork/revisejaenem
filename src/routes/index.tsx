@@ -1,24 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
+import landingHtml from "../content/revisaja.html?raw";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
+// Serve a página aprovada diretamente pela rota existente do TanStack Start.
+// Sem iframe, redirecionamento, scripts de marketing ou publicação automática.
 export const Route = createFileRoute("/")({
-  component: Index,
+  server: {
+    handlers: {
+      GET: () =>
+        new Response(landingHtml, {
+          headers: {
+            "Content-Type": "text/html; charset=utf-8",
+            "Cache-Control": "no-cache",
+            "X-Robots-Tag": "noindex, nofollow",
+          },
+        }),
+    },
+  },
 });
-
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
