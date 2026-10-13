@@ -50,6 +50,22 @@ body.viewer-open{overflow:hidden}
 @media(max-width:700px){.hero-placeholder.has-image{max-height:none}.plan-placeholder.has-image{aspect-ratio:4/3}.plan-placeholder.has-image[data-asset="MOCKUP_COMPLETO"]{aspect-ratio:1.55}}
 
 .carousel-toggle{border:1px solid var(--line);background:white;color:var(--purple);border-radius:7px;font-size:11px;padding:6px 10px;cursor:pointer;min-height:34px;display:block;margin:0 0 10px auto}#previews{position:relative}
+
+/* Ampliação exclusiva das prévias; os demais visualizadores permanecem intactos. */
+#preview-viewer{width:min(1100px,calc(100% - 24px));height:min(94dvh,1000px);max-width:none;max-height:96dvh;border:1px solid #dfd4ef;border-radius:14px;padding:0;color:var(--ink);background:white;overflow:hidden}
+#preview-viewer[open]{display:flex;flex-direction:column}#preview-viewer::backdrop{background:#160d26d9}
+#preview-viewer .preview-toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line);flex-shrink:0}
+#preview-title{font-size:13px;line-height:1.35;min-width:0;flex:1 1 230px}
+#preview-viewer .preview-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+#preview-viewer button{border:1px solid var(--line);border-radius:7px;background:var(--pale);color:var(--ink);min-width:44px;min-height:44px;padding:7px 10px;font-size:13px;cursor:pointer}
+#preview-viewer button:disabled{opacity:.45;cursor:default}#preview-zoom-in,#preview-zoom-out{font-size:22px!important;line-height:1}
+#preview-stage{position:relative;flex:1;min-height:0;overflow:hidden;background:#f7f5fb;touch-action:none;user-select:none;overscroll-behavior:contain}
+#preview-stage[data-zoomed="true"]{cursor:grab}#preview-stage[data-dragging="true"]{cursor:grabbing}
+#preview-image{position:absolute;left:50%;top:50%;max-width:none;max-height:none;display:block;object-fit:contain;transform-origin:center;user-select:none;-webkit-user-drag:none;pointer-events:none}
+#preview-status{position:absolute;inset:0;display:grid;place-items:center;padding:20px;text-align:center;font-size:13px;color:var(--muted)}
+#preview-viewer .preview-bottom{display:flex;align-items:center;justify-content:center;gap:12px;padding:8px 12px;border-top:1px solid var(--line);font-size:12px;flex-shrink:0}
+#preview-scale{min-width:45px;text-align:center;font-size:12px;font-variant-numeric:tabular-nums}
+@media(max-width:700px){#preview-viewer{width:calc(100% - 12px);height:96dvh;max-height:98dvh;border-radius:10px}#preview-title{font-size:12px;flex-basis:100%}#preview-viewer .preview-actions{width:100%;flex-wrap:nowrap}#preview-close{margin-left:auto}#preview-viewer .preview-toolbar{padding:8px}#preview-viewer .preview-bottom{padding:6px 8px}}
 </style>
 </head>
 <body>
@@ -65,6 +81,16 @@ body.viewer-open{overflow:hidden}
 </main>
 <footer><div class="wrap footer-inner"><div class="brand">Revisa<span>Já</span> ENEM</div><div class="legal"><div id="legal-links"></div><p id="commercial-info" hidden></p></div></div></footer>
 <dialog id="image-viewer" aria-labelledby="viewer-title"><div class="viewer-toolbar"><span id="viewer-title">Página do resumo</span><div class="viewer-actions"><button id="viewer-zoom" class="viewer-close" type="button" aria-pressed="false">Zoom +</button><button class="viewer-close" id="viewer-close" type="button" aria-label="Fechar imagem ampliada">Fechar ×</button></div></div><div class="viewer-body"><img id="viewer-image" alt=""></div><div class="viewer-nav" hidden><button type="button" class="round" id="viewer-prev" aria-label="Página real anterior">←</button><span id="viewer-count" aria-live="polite"></span><button type="button" class="round" id="viewer-next" aria-label="Próxima página real">→</button></div></dialog>
+
+<dialog id="preview-viewer" aria-labelledby="preview-title" aria-describedby="preview-help">
+  <div class="preview-toolbar"><span id="preview-title">Página do resumo</span><div class="preview-actions">
+    <button id="preview-zoom-out" type="button" aria-label="Diminuir zoom">−</button><output id="preview-scale" aria-live="polite">100%</output><button id="preview-zoom-in" type="button" aria-label="Aumentar zoom">+</button>
+    <button id="preview-reset" type="button" aria-label="Resetar zoom e ajustar a página à tela">Ajustar</button><button id="preview-close" type="button" aria-label="Fechar prévia ampliada" autofocus>Fechar ×</button>
+  </div></div>
+  <div id="preview-stage"><img id="preview-image" alt="" draggable="false" hidden><span id="preview-status" role="status">Carregando página…</span></div>
+  <div class="preview-bottom"><button id="preview-prev" type="button" aria-label="Prévia anterior">←</button><span id="preview-count" aria-live="polite"></span><button id="preview-next" type="button" aria-label="Próxima prévia">→</button></div>
+  <span id="preview-help" hidden>Use os controles ou a roda do mouse para ampliar. No celular, use dois dedos. Arraste a página ampliada para ver os detalhes.</span>
+</dialog>
 <noscript>Ative o JavaScript para visualizar os planos e o carrossel desta prévia. As compras ainda não estão disponíveis.</noscript>
 <script>
 // Configuração centralizada. Prévia local; nenhuma integração ou rastreamento.
@@ -80,6 +106,8 @@ const CONFIG = {
     PREVIEW_RESUMO_01: '/revisaja/resumo-01.webp', PREVIEW_RESUMO_02: '/revisaja/resumo-02.webp', PREVIEW_RESUMO_03: '/revisaja/resumo-03.webp',
     PREVIEW_RESUMO_04: '/revisaja/resumo-04.webp', PREVIEW_RESUMO_05: '/revisaja/resumo-05.webp', PREVIEW_RESUMO_06: '/revisaja/resumo-06.webp', PRINT_ORGANIZACAO_DRIVE: '/revisaja/biblioteca-drive-v2.webp'
   },
+  // Fontes sem perdas, carregadas somente ao abrir uma prévia. Substituir por exportações dos PDFs quando disponíveis.
+  previewFullImages: {"PREVIEW_RESUMO_01": "/revisaja/resumo-01-original.webp", "PREVIEW_RESUMO_02": "/revisaja/resumo-02-original.webp", "PREVIEW_RESUMO_03": "/revisaja/resumo-03-original.webp", "PREVIEW_RESUMO_04": "/revisaja/resumo-04-original.webp", "PREVIEW_RESUMO_05": "/revisaja/resumo-05-original.webp", "PREVIEW_RESUMO_06": "/revisaja/resumo-06-original.webp"},
   // Somente preencher com avaliações reais e autorizadas.
   testimonials: {DEPOIMENTO_01: null, DEPOIMENTO_02: null, DEPOIMENTO_03: null},
   subjects: ['Português','Literatura','Artes','História','Geografia','Filosofia','Sociologia'],
@@ -121,6 +149,7 @@ function showViewerImage(){
   const body=document.querySelector('.viewer-body');body.classList.remove('zoomed');body.scrollTop=0;body.scrollLeft=0;document.querySelector('#viewer-zoom').setAttribute('aria-pressed','false');document.querySelector('#viewer-zoom').textContent='Zoom +';
 }
 function openImageViewer(key){
+  if(key.startsWith('PREVIEW_RESUMO_')){openPreviewViewer(key);return}
   viewerKeys=key.startsWith('PREVIEW_RESUMO_')?Object.keys(CONFIG.images).filter(k=>k.startsWith('PREVIEW_RESUMO_')&&CONFIG.images[k]&&document.querySelector(`[data-image-key="${k}"]`)):[key];
   viewerIndex=viewerKeys.indexOf(key);showViewerImage();viewer.showModal();document.body.classList.add('viewer-open');
 }
@@ -133,6 +162,89 @@ viewer.addEventListener('click',event=>{if(event.target===viewer){const r=viewer
 viewer.addEventListener('keydown',event=>{if(event.key==='ArrowLeft'||event.key==='ArrowRight'){event.preventDefault();moveViewer(event.key==='ArrowLeft'?-1:1)}});
 viewer.querySelector('#viewer-prev').addEventListener('click',()=>moveViewer(-1));viewer.querySelector('#viewer-next').addEventListener('click',()=>moveViewer(1));
 if(Object.keys(CONFIG.images).some(k=>k.startsWith('PREVIEW_RESUMO_')&&CONFIG.images[k]))document.querySelector('#gallery-hint').textContent='Deslize para explorar. Toque nas páginas para ampliar.';
+
+// Viewer de páginas: 100% = página inteira ajustada; zoom limitado a 4× esse ajuste.
+const previewViewer=document.querySelector('#preview-viewer');
+const previewStage=document.querySelector('#preview-stage'),previewImage=document.querySelector('#preview-image');
+const previewStatus=document.querySelector('#preview-status');
+let previewIndex=0,previewZoom=1,previewPanX=0,previewPanY=0,previewWidth=0,previewHeight=0,previewReady=false;
+const previewPointers=new Map();let previewGesture=null;
+const clamp=(value,min,max)=>Math.max(min,Math.min(max,value));
+function renderPreview(){
+  if(!previewReady)return;
+  const limitX=Math.max(0,(previewWidth*previewZoom-previewStage.clientWidth)/2);
+  const limitY=Math.max(0,(previewHeight*previewZoom-previewStage.clientHeight)/2);
+  previewPanX=clamp(previewPanX,-limitX,limitX);previewPanY=clamp(previewPanY,-limitY,limitY);
+  previewImage.style.transform=`translate(-50%,-50%) translate(${previewPanX}px,${previewPanY}px) scale(${previewZoom})`;
+  previewStage.dataset.zoomed=String(previewZoom>1.001);
+  document.querySelector('#preview-scale').textContent=`${Math.round(previewZoom*100)}%`;
+  document.querySelector('#preview-zoom-out').disabled=previewZoom<=1.001;
+  document.querySelector('#preview-zoom-in').disabled=previewZoom>=3.999;
+}
+function fitPreview(reset=false){
+  if(!previewViewer.open||!previewImage.naturalWidth||!previewImage.complete)return;
+  const fit=Math.min((previewStage.clientWidth-24)/previewImage.naturalWidth,(previewStage.clientHeight-24)/previewImage.naturalHeight,1);
+  if(fit<=0)return;
+  previewWidth=previewImage.naturalWidth*fit;previewHeight=previewImage.naturalHeight*fit;
+  previewImage.style.width=`${previewWidth}px`;previewImage.style.height=`${previewHeight}px`;
+  if(reset){previewZoom=1;previewPanX=previewPanY=0;previewPointers.clear();previewGesture=null}
+  previewReady=true;renderPreview();previewImage.hidden=false;previewStatus.hidden=true;
+}
+function previewPoint(event){const r=previewStage.getBoundingClientRect();return {x:event.clientX-r.left-r.width/2,y:event.clientY-r.top-r.height/2}}
+function zoomPreview(value,point={x:0,y:0}){
+  if(!previewReady)return;
+  const zoom=clamp(value,1,4),ratio=zoom/previewZoom;
+  previewPanX=point.x-(point.x-previewPanX)*ratio;previewPanY=point.y-(point.y-previewPanY)*ratio;previewZoom=zoom;renderPreview();
+}
+function resetPreview(){previewZoom=1;previewPanX=previewPanY=0;renderPreview();beginPreviewGesture()}
+function showPreviewPage(){
+  previewReady=false;previewZoom=1;previewPanX=previewPanY=0;previewPointers.clear();previewGesture=null;
+  previewStage.dataset.dragging='false';previewStage.dataset.zoomed='false';previewImage.hidden=true;previewStatus.hidden=false;previewStatus.textContent='Carregando página…';
+  document.querySelector('#preview-scale').textContent='100%';document.querySelector('#preview-zoom-out').disabled=true;document.querySelector('#preview-zoom-in').disabled=true;
+  const key=previewKeys[previewIndex],thumbnail=document.querySelector(`[data-image-key="${key}"] img`);
+  previewImage.alt=thumbnail.alt;document.querySelector('#preview-title').textContent=thumbnail.alt;
+  document.querySelector('#preview-count').textContent=`${previewIndex+1} de ${previewKeys.length}`;
+  document.querySelector('#preview-prev').disabled=previewIndex===0;document.querySelector('#preview-next').disabled=previewIndex===previewKeys.length-1;
+  previewImage.src=CONFIG.previewFullImages[key]||CONFIG.images[key];
+  // O evento load cobre downloads novos; este caminho cobre imagens em cache.
+  if(previewImage.complete&&previewImage.naturalWidth)fitPreview(true);
+}
+function openPreviewViewer(key){previewIndex=previewKeys.indexOf(key);if(previewIndex<0)return;previewViewer.showModal();previewViewer.dispatchEvent(new Event('preview-open'));document.body.classList.add('viewer-open');showPreviewPage()}
+function movePreview(delta){previewIndex=clamp(previewIndex+delta,0,previewKeys.length-1);showPreviewPage()}
+previewImage.addEventListener('load',()=>fitPreview(true));
+previewImage.addEventListener('error',()=>{previewReady=false;previewImage.hidden=true;previewStatus.hidden=false;previewStatus.textContent='Não foi possível carregar esta página. Tente novamente.'});
+new ResizeObserver(()=>{if(previewReady)fitPreview()}).observe(previewStage);
+document.querySelector('#preview-zoom-in').addEventListener('click',()=>zoomPreview(previewZoom*1.25));
+document.querySelector('#preview-zoom-out').addEventListener('click',()=>zoomPreview(previewZoom/1.25));
+document.querySelector('#preview-reset').addEventListener('click',resetPreview);
+document.querySelector('#preview-close').addEventListener('click',()=>previewViewer.close());
+document.querySelector('#preview-prev').addEventListener('click',()=>movePreview(-1));
+document.querySelector('#preview-next').addEventListener('click',()=>movePreview(1));
+previewViewer.addEventListener('keydown',event=>{if(event.key==='ArrowLeft'||event.key==='ArrowRight'){event.preventDefault();movePreview(event.key==='ArrowLeft'?-1:1)}});
+previewViewer.addEventListener('click',event=>{if(event.target===previewViewer){const r=previewViewer.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)previewViewer.close()}});
+previewViewer.addEventListener('close',()=>{previewReady=false;previewPointers.clear();previewGesture=null;previewImage.removeAttribute('src');document.body.classList.remove('viewer-open')});
+previewStage.addEventListener('wheel',event=>{event.preventDefault();zoomPreview(previewZoom*Math.exp(-clamp(event.deltaY,-100,100)*.002),previewPoint(event))},{passive:false});
+function beginPreviewGesture(){
+  const points=[...previewPointers.values()];
+  if(points.length>=2){const [a,b]=points;previewGesture={type:'pinch',distance:Math.max(1,Math.hypot(a.x-b.x,a.y-b.y)),point:{x:(a.x+b.x)/2,y:(a.y+b.y)/2},zoom:previewZoom,x:previewPanX,y:previewPanY}}
+  else if(points.length===1)previewGesture={type:'pan',point:points[0],x:previewPanX,y:previewPanY};else previewGesture=null;
+  previewStage.dataset.dragging=String(points.length>0&&previewZoom>1);
+}
+previewStage.addEventListener('pointerdown',event=>{
+  if(!previewReady||(event.pointerType==='mouse'&&event.button!==0))return;
+  event.preventDefault();previewPointers.set(event.pointerId,previewPoint(event));previewStage.setPointerCapture(event.pointerId);beginPreviewGesture();
+});
+previewStage.addEventListener('pointermove',event=>{
+  if(!previewPointers.has(event.pointerId)||!previewGesture)return;
+  previewPointers.set(event.pointerId,previewPoint(event));const points=[...previewPointers.values()];
+  if(previewGesture.type==='pinch'&&points.length>=2){const [a,b]=points,point={x:(a.x+b.x)/2,y:(a.y+b.y)/2};
+    previewZoom=clamp(previewGesture.zoom*Math.hypot(a.x-b.x,a.y-b.y)/previewGesture.distance,1,4);const ratio=previewZoom/previewGesture.zoom;
+    previewPanX=point.x-(previewGesture.point.x-previewGesture.x)*ratio;previewPanY=point.y-(previewGesture.point.y-previewGesture.y)*ratio;
+  }else if(previewGesture.type==='pan'&&previewZoom>1){previewPanX=previewGesture.x+points[0].x-previewGesture.point.x;previewPanY=previewGesture.y+points[0].y-previewGesture.point.y}
+  renderPreview();beginPreviewGesture();
+});
+for(const name of ['pointerup','pointercancel','lostpointercapture'])previewStage.addEventListener(name,event=>{if(previewPointers.delete(event.pointerId))beginPreviewGesture()});
+
 const reviews=Object.values(CONFIG.testimonials).filter(r=>r&&r.name&&r.text);
 if(reviews.length){document.querySelector('#avaliacoes').hidden=false;for(const review of reviews){const el=document.createElement('article');el.className='slide testimonial';const person=document.createElement('div');person.className='review-person';if(review.photo){const img=document.createElement('img');img.src=review.photo;img.alt='';img.loading='lazy';person.append(img)}const name=document.createElement('strong');name.textContent=review.name;person.append(name);const body=document.createElement('p');body.textContent=review.text;el.append(person,body);document.querySelector('#reviews').append(el)}}
 for(const button of document.querySelectorAll('[data-carousel]:not([data-carousel="previews"])')){button.addEventListener('click',()=>{const track=document.getElementById(button.dataset.carousel);track.scrollBy({left:Number(button.dataset.direction)*(track.querySelector('.slide').getBoundingClientRect().width+14),behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'})})}
@@ -160,7 +272,7 @@ for(const track of document.querySelectorAll('.carousel:not(#previews)')){const 
   function measure(){const first=originals[0].getBoundingClientRect(),second=originals[1].getBoundingClientRect();stride=second.left-first.left;base=first.left-track.getBoundingClientRect().left+track.scrollLeft;cycle=stride*count}
   function index(){return Math.round((track.scrollLeft-base)/stride)}
   function buttonState(){toggle.textContent=userPaused||reduced.matches?'Reproduzir':'Pausar';toggle.disabled=reduced.matches;toggle.setAttribute('aria-pressed',String(userPaused||reduced.matches));toggle.setAttribute('aria-label',reduced.matches?'Passagem automática desativada pela preferência de movimento reduzido':userPaused?'Iniciar passagem automática das páginas':'Pausar passagem automática das páginas')}
-  function blocked(){return !visible||document.hidden||hover||pressed||viewer.open||userPaused||reduced.matches||moving||rebasing}
+  function blocked(){return !visible||document.hidden||hover||pressed||viewer.open||previewViewer.open||userPaused||reduced.matches||moving||rebasing}
   function schedule(){
     clearTimeout(timer);timer=null;if(blocked())return;
     const now=performance.now(),due=manualUntil>now?manualUntil:nextDue;
@@ -221,7 +333,8 @@ for(const track of document.querySelectorAll('.carousel:not(#previews)')){const 
   track.addEventListener('keydown',event=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(event.key))interacted()});
   track.addEventListener('click',event=>{const clone=event.target.closest('[data-loop-image-key]');if(clone)openImageViewer(clone.dataset.loopImageKey);schedule()});
   toggle.addEventListener('click',()=>{userPaused=!userPaused;manualUntil=0;nextDue=performance.now()+interval;buttonState();schedule()});
-  viewer.addEventListener('close',()=>{manualUntil=0;nextDue=performance.now()+interval;schedule()});
+  previewViewer.addEventListener('preview-open',()=>{cancelAnimation();clearTimeout(timer);timer=null});
+  for(const modal of [viewer,previewViewer])modal.addEventListener('close',()=>{manualUntil=0;nextDue=performance.now()+interval;schedule()});
   document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelAnimation();nextDue=performance.now()+interval;schedule()});
   reduced.addEventListener('change',()=>{cancelAnimation();buttonState();nextDue=performance.now()+interval;schedule()});
   function visibility(value){if(visible===value)return;visible=value;if(!visible)cancelAnimation();nextDue=performance.now()+interval;schedule()}
