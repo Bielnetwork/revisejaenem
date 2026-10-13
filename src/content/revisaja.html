@@ -49,7 +49,8 @@ body.viewer-open{overflow:hidden}
 #viewer-image.premium-cropped{clip-path:inset(0 0 14% 0)}
 @media(max-width:700px){.hero-placeholder.has-image{max-height:none}.plan-placeholder.has-image{aspect-ratio:4/3}.plan-placeholder.has-image[data-asset="MOCKUP_COMPLETO"]{aspect-ratio:1.55}}
 
-.carousel-toggle{border:1px solid var(--line);background:white;color:var(--purple);border-radius:7px;font-size:11px;padding:6px 10px;cursor:pointer;min-height:34px;display:block;margin:0 0 10px auto}#previews{position:relative}
+.carousel-toggle{border:1px solid var(--line);background:white;color:var(--purple);border-radius:7px;font-size:11px;padding:6px 10px;cursor:pointer;min-height:34px;display:block;margin:0 0 10px auto}#previews{position:relative;overflow:hidden;overflow:clip;scroll-snap-type:none;touch-action:pan-y;overscroll-behavior-x:contain}
+#previews .preview-belt{display:flex;gap:inherit;flex:0 0 100%;width:100%;min-width:0}
 
 /* Ampliação exclusiva das prévias; os demais visualizadores permanecem intactos. */
 #preview-viewer{width:min(1100px,calc(100% - 24px));height:min(94dvh,1000px);max-width:none;max-height:96dvh;border:1px solid #dfd4ef;border-radius:14px;padding:0;color:var(--ink);background:white;overflow:hidden}
@@ -66,18 +67,36 @@ body.viewer-open{overflow:hidden}
 #preview-viewer .preview-bottom{display:flex;align-items:center;justify-content:center;gap:12px;padding:8px 12px;border-top:1px solid var(--line);font-size:12px;flex-shrink:0}
 #preview-scale{min-width:45px;text-align:center;font-size:12px;font-variant-numeric:tabular-nums}
 @media(max-width:700px){#preview-viewer{width:calc(100% - 12px);height:96dvh;max-height:98dvh;border-radius:10px}#preview-title{font-size:12px;flex-basis:100%}#preview-viewer .preview-actions{width:100%;flex-wrap:nowrap}#preview-close{margin-left:auto}#preview-viewer .preview-toolbar{padding:8px}#preview-viewer .preview-bottom{padding:6px 8px}}
+
+/* Oferta de upgrade somente após selecionar o Essencial; estilos isolados. */
+#essential-upgrade{width:min(520px,calc(100% - 24px));max-width:none;max-height:calc(100dvh - 24px);padding:22px;border:1px solid #dfd4ef;border-radius:18px;background:white;color:var(--ink);overflow:auto}
+#essential-upgrade::backdrop{background:#160d26bf}
+#essential-upgrade .upgrade-header{display:flex;align-items:center;justify-content:space-between;gap:10px;position:sticky;top:-22px;background:white;padding:0 0 10px;z-index:1}
+#essential-upgrade .upgrade-badge{color:var(--purple);background:var(--pale);border-radius:6px;padding:6px 9px;font-size:12px;font-weight:750}
+#upgrade-close{border:1px solid var(--line);border-radius:8px;background:white;color:var(--ink);min-width:44px;min-height:44px;font-size:24px;cursor:pointer}
+#upgrade-title{font-size:25px;line-height:1.2;letter-spacing:-.035em;margin:4px 0 13px}
+#essential-upgrade .upgrade-copy{font-size:14px;color:var(--muted);line-height:1.5}
+#essential-upgrade .upgrade-value{background:var(--pale);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:17px 0}
+#essential-upgrade .upgrade-value strong{display:block;font-size:36px;font-weight:800;line-height:1.25;color:var(--purple);letter-spacing:-1px;margin-top:4px}
+#essential-upgrade .upgrade-value p{font-size:13px;line-height:1.5;margin-top:6px;color:var(--muted)}
+#essential-upgrade .upgrade-primary{width:100%;font-size:13px;min-height:52px;padding:12px 15px}
+#essential-upgrade .upgrade-secondary{display:block;width:100%;min-height:44px;margin-top:8px;border:0;border-radius:7px;background:white;color:var(--purple);text-decoration:underline;text-underline-offset:3px;font-size:13px;padding:9px;cursor:pointer}
+#essential-upgrade .upgrade-primary:disabled{background:#ece6f5;color:#786990;cursor:not-allowed}#essential-upgrade .upgrade-secondary:disabled{color:var(--muted);cursor:not-allowed}
+#upgrade-pending{font-size:11px;line-height:1.45;color:var(--muted);text-align:center;margin-top:8px}
+body.upgrade-open{overflow:hidden}
+@media(max-width:700px){#essential-upgrade{padding:18px;border-radius:14px}#essential-upgrade .upgrade-header{top:-18px}#upgrade-title{font-size:22px}#essential-upgrade .upgrade-copy{font-size:13px}#essential-upgrade .upgrade-value{padding:12px 14px;margin:14px 0}#essential-upgrade .upgrade-primary{font-size:12px}}
 </style>
 </head>
 <body>
 <div class="preview-notice" data-dev>Prévia de layout · compras ainda não disponíveis</div>
 <header class="wrap"><div class="brand">Revisa<span>Já</span><small>ENEM</small></div><span class="header-note">Biblioteca digital de resumos</span></header>
 <main>
-<section class="hero"><div class="wrap hero-grid"><div><span class="eyebrow">Sua revisão, por assunto</span><h1>O ENEM está chegando. <em>Falta tempo pra revisar tanta matéria?</em></h1><p class="lead">Retome o que já estudou com resumos manuscritos e visuais, prontos para consultar. Revise sem gastar seu tempo montando cada resumo.</p><p class="hero-goal">Para chegar mais preparado à prova e disputar sua vaga na universidade.</p></div><div class="hero-media"><div class="placeholder hero-placeholder" data-asset="MOCKUP_HERO"><span class="frame" aria-hidden="true"></span><strong>Seu material em destaque</strong><small>Espaço para o mockup real</small></div><p class="media-caption">Conceitos, esquemas e fórmulas em resumos separados por matéria e assunto.</p></div><div class="hero-actions"><ul class="benefits"><li>Até 11 disciplinas para retomar o que estudou.</li><li>Encontre os PDFs por matéria e assunto.</li><li>Acesso vitalício: consulte online ou baixe para usar.</li></ul><a class="cta" href="#planos">Escolher meu plano <span class="arrow" aria-hidden="true">↓</span></a><p class="footnote">Material digital · Planos a partir de R$ 11,90</p></div></div></section>
+<section class="hero"><div class="wrap hero-grid"><div><span class="eyebrow">Sua revisão, por assunto</span><h1>O ENEM está chegando. <em>Falta tempo pra revisar tanta matéria?</em></h1><p class="lead">Retome o que já estudou com resumos manuscritos e visuais, prontos para consultar. Revise sem gastar seu tempo montando cada resumo.</p><p class="hero-goal">Para chegar mais preparado à prova e disputar sua vaga na universidade.</p></div><div class="hero-media"><div class="placeholder hero-placeholder" data-asset="MOCKUP_HERO"><span class="frame" aria-hidden="true"></span><strong>Seu material em destaque</strong><small>Espaço para o mockup real</small></div><p class="media-caption">Conceitos, esquemas e fórmulas em resumos separados por matéria e assunto.</p></div><div class="hero-actions"><ul class="benefits"><li>Até 11 disciplinas para retomar o que estudou.</li><li>Encontre os PDFs por matéria e assunto.</li><li>Acesso vitalício: consulte online ou baixe para usar.</li></ul><a class="cta" href="#planos">Escolher meu plano <span class="arrow" aria-hidden="true">↓</span></a><p class="footnote">Material digital · Planos a partir de R$ 9,90</p></div></div></section>
 <section class="section pain"><div class="wrap pain-layout"><div><span class="eyebrow">Sua rotina não espera a prova</span><h2>A lista de assuntos cresce. O tempo para revisar, não.</h2></div><div><div class="situations"><div class="situation"><span class="number">01</span><div><strong>Na reta final, com muita matéria pra revisar?</strong><p>Para quem precisa retomar os assuntos antes da prova.</p></div></div><div class="situation"><span class="number">02</span><div><strong>Escola, trabalho e responsabilidades no mesmo dia.</strong><p>Para quem tem pouco tempo para preparar os próprios resumos.</p></div></div><div class="situation"><span class="number">03</span><div><strong>Já estudou, mas precisa relembrar?</strong><p>Para consultar conceitos, fórmulas e esquemas durante a revisão.</p></div></div></div><p class="transition">Uma biblioteca de resumos manuscritos e visuais já preparados, separados por matéria e assunto. Consulte sem precisar criar e organizar tudo sozinho.</p></div></div></section>
 <section class="section"><div class="wrap"><div class="section-intro"><div><span class="eyebrow">Conheça o que você recebe</span><h2>Veja o material por dentro.</h2><p>Confira o formato dos resumos antes de escolher seu plano.</p></div><div class="carousel-control"><button class="round" data-carousel="previews" data-direction="-1" aria-label="Ver páginas anteriores">←</button><button class="round" data-carousel="previews" data-direction="1" aria-label="Ver próximas páginas">→</button></div></div><button type="button" class="carousel-toggle" id="carousel-toggle" aria-label="Pausar passagem automática das páginas" aria-pressed="false">Pausar</button><div class="carousel" id="previews" aria-label="Prévias dos resumos" tabindex="0"></div><p class="gallery-hint" id="gallery-hint">Deslize para explorar. Toque nas páginas para ampliar.</p><p class="sample-note"><strong>Estas são amostras, não o material inteiro.</strong> Você recebe a biblioteca das disciplinas do seu plano, com diferentes assuntos e seus PDFs.</p><div class="organization"><div><h3>11 disciplinas no Completo. Diversos assuntos para revisar.</h3><p>Abra a matéria, escolha o assunto e consulte os resumos. Cada assunto pode reunir vários PDFs no Google Drive.</p><div class="path" aria-label="Organização: matéria, assunto, PDF"><span>Matéria</span><span aria-hidden="true">→</span><span>Assunto</span><span aria-hidden="true">→</span><span>PDF</span></div><p class="navigation-example">Exemplo: Matemática → Geometria Plana → Resumos em PDF.</p><p class="library-scope">O Completo reúne as 11 disciplinas; o Essencial, 7.</p></div><div class="placeholder drive-placeholder" data-asset="PRINT_ORGANIZACAO_DRIVE"><strong>Organização da biblioteca</strong><small>Espaço para a captura real do Google Drive</small></div></div></div></section>
 <section class="section" id="avaliacoes" hidden><div class="wrap"><div class="section-intro"><h2>Quem revisou com o material.</h2><div class="carousel-control"><button class="round" data-carousel="reviews" data-direction="-1" aria-label="Avaliações anteriores">←</button><button class="round" data-carousel="reviews" data-direction="1" aria-label="Próximas avaliações">→</button></div></div><div class="carousel" id="reviews" tabindex="0" aria-label="Avaliações reais dos estudantes"></div></div></section>
-<section class="section plans-section" id="planos"><div class="wrap"><div class="center"><span class="eyebrow">Escolha seu plano</span><h2>Mais matérias para revisar. Só R$ 8,00 de diferença.</h2><p>No Completo, você leva as 7 disciplinas do Essencial e mais Matemática, Física, Química e Biologia.</p></div><div class="plans" id="plan-cards"></div><div class="guarantee" id="guarantee" role="region" aria-labelledby="guarantee-title"><svg class="guarantee-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 4 6v6c0 5 8 9 8 9s8-4 8-9V6l-8-3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m8 12 3 3 5-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div><h3 id="guarantee-title">Garantia de 7 dias para sua tranquilidade.</h3><p id="guarantee-copy">Você tem 7 dias após a compra para conhecer o material. Caso não fique satisfeito, poderá solicitar o reembolso conforme as condições da garantia.</p></div></div><p class="scope-note">Resumos para apoiar a revisão de conteúdos já estudados. Não incluem Redação, Inglês/Espanhol nem todos os conteúdos do ENEM.</p></div></section>
-<section class="section"><div class="wrap access-grid"><div><span class="eyebrow">Do plano à sua revisão</span><h2>Escolheu. Recebeu. Começou a revisar.</h2><ol class="steps"><li><span class="number">1</span><p>Escolha seu plano.</p></li><li><span class="number">2</span><p>Após a confirmação da compra, receba acesso aos arquivos pelo Google Drive.</p></li><li><span class="number">3</span><p>Escolha a matéria e o assunto que deseja revisar.</p></li></ol><p class="digital-note">Arquivos digitais em PDF. Você pode visualizar, baixar e acessar o material de forma vitalícia.</p></div><div><span class="eyebrow">Antes de escolher</span><h3>Dúvidas rápidas.</h3><details><summary>Como recebo os resumos?</summary><p id="access-answer">Após a confirmação da compra, você receberá o link de acesso à biblioteca no Google Drive. <span data-dev>A forma de envio ainda precisa ser configurada.</span></p></details><details><summary>Posso baixar os PDFs?</summary><p>Sim. Você pode baixar os PDFs do seu plano e consultar os arquivos salvos mesmo sem internet.</p></details><details><summary>Qual é a diferença entre os planos?</summary><p>O Essencial reúne 7 disciplinas. Por mais R$ 8,00, o Completo reúne as mesmas 7 e acrescenta Matemática, Física, Química e Biologia.</p></details><details><summary>Os materiais possuem exercícios ou aulas?</summary><p>Não. São apenas resumos em PDF, sem videoaulas, exercícios, questões comentadas, simulados ou cronogramas. Eles apoiam a revisão; não substituem um curso ou a prática com questões.</p></details><details id="guarantee-faq"><summary>Como funciona a garantia?</summary><p id="guarantee-answer">Você tem 7 dias após a compra para conhecer o material. Caso não fique satisfeito, poderá solicitar o reembolso conforme as condições da garantia.</p></details></div></div><div class="wrap"><div class="closing"><h3>Seu objetivo é chegar à universidade. Aproveite o tempo que resta para revisar.</h3><p>Tenha seus resumos organizados e continue sua preparação para o ENEM.</p><div class="final-cta"><a class="cta" href="#planos">Escolher meu plano <span class="arrow" aria-hidden="true">↑</span></a></div></div></div></section>
+<section class="section plans-section" id="planos"><div class="wrap"><div class="center"><span class="eyebrow">Escolha seu plano</span><h2>Mais matérias para revisar. Só R$ 10,00 de diferença.</h2><p>No Completo, você leva as 7 disciplinas do Essencial e mais Matemática, Física, Química e Biologia.</p></div><div class="plans" id="plan-cards"></div><div class="guarantee" id="guarantee" role="region" aria-labelledby="guarantee-title"><svg class="guarantee-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 4 6v6c0 5 8 9 8 9s8-4 8-9V6l-8-3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m8 12 3 3 5-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div><h3 id="guarantee-title">Garantia de 7 dias para sua tranquilidade.</h3><p id="guarantee-copy">Você tem 7 dias após a compra para conhecer o material. Caso não fique satisfeito, poderá solicitar o reembolso conforme as condições da garantia.</p></div></div><p class="scope-note">Resumos para apoiar a revisão de conteúdos já estudados. Não incluem Redação, Inglês/Espanhol nem todos os conteúdos do ENEM.</p></div></section>
+<section class="section"><div class="wrap access-grid"><div><span class="eyebrow">Do plano à sua revisão</span><h2>Escolheu. Recebeu. Começou a revisar.</h2><ol class="steps"><li><span class="number">1</span><p>Escolha seu plano.</p></li><li><span class="number">2</span><p>Após a confirmação da compra, receba acesso aos arquivos pelo Google Drive.</p></li><li><span class="number">3</span><p>Escolha a matéria e o assunto que deseja revisar.</p></li></ol><p class="digital-note">Arquivos digitais em PDF. Você pode visualizar, baixar e acessar o material de forma vitalícia.</p></div><div><span class="eyebrow">Antes de escolher</span><h3>Dúvidas rápidas.</h3><details><summary>Como recebo os resumos?</summary><p id="access-answer">Após a confirmação da compra, você receberá o link de acesso à biblioteca no Google Drive. <span data-dev>A forma de envio ainda precisa ser configurada.</span></p></details><details><summary>Posso baixar os PDFs?</summary><p>Sim. Você pode baixar os PDFs do seu plano e consultar os arquivos salvos mesmo sem internet.</p></details><details><summary>Qual é a diferença entre os planos?</summary><p>O Essencial reúne 7 disciplinas. Por mais R$ 10,00, o Completo reúne as mesmas 7 e acrescenta Matemática, Física, Química e Biologia.</p></details><details><summary>Os materiais possuem exercícios ou aulas?</summary><p>Não. São apenas resumos em PDF, sem videoaulas, exercícios, questões comentadas, simulados ou cronogramas. Eles apoiam a revisão; não substituem um curso ou a prática com questões.</p></details><details id="guarantee-faq"><summary>Como funciona a garantia?</summary><p id="guarantee-answer">Você tem 7 dias após a compra para conhecer o material. Caso não fique satisfeito, poderá solicitar o reembolso conforme as condições da garantia.</p></details></div></div><div class="wrap"><div class="closing"><h3>Seu objetivo é chegar à universidade. Aproveite o tempo que resta para revisar.</h3><p>Tenha seus resumos organizados e continue sua preparação para o ENEM.</p><div class="final-cta"><a class="cta" href="#planos">Escolher meu plano <span class="arrow" aria-hidden="true">↑</span></a></div></div></div></section>
 </main>
 <footer><div class="wrap footer-inner"><div class="brand">Revisa<span>Já</span> ENEM</div><div class="legal"><div id="legal-links"></div><p id="commercial-info" hidden></p></div></div></footer>
 <dialog id="image-viewer" aria-labelledby="viewer-title"><div class="viewer-toolbar"><span id="viewer-title">Página do resumo</span><div class="viewer-actions"><button id="viewer-zoom" class="viewer-close" type="button" aria-pressed="false">Zoom +</button><button class="viewer-close" id="viewer-close" type="button" aria-label="Fechar imagem ampliada">Fechar ×</button></div></div><div class="viewer-body"><img id="viewer-image" alt=""></div><div class="viewer-nav" hidden><button type="button" class="round" id="viewer-prev" aria-label="Página real anterior">←</button><span id="viewer-count" aria-live="polite"></span><button type="button" class="round" id="viewer-next" aria-label="Próxima página real">→</button></div></dialog>
@@ -91,13 +110,26 @@ body.viewer-open{overflow:hidden}
   <div class="preview-bottom"><button id="preview-prev" type="button" aria-label="Prévia anterior">←</button><span id="preview-count" aria-live="polite"></span><button id="preview-next" type="button" aria-label="Próxima prévia">→</button></div>
   <span id="preview-help" hidden>Use os controles ou a roda do mouse para ampliar. No celular, use dois dedos. Arraste a página ampliada para ver os detalhes.</span>
 </dialog>
+
+<dialog id="essential-upgrade" aria-labelledby="upgrade-title" aria-describedby="upgrade-description">
+  <div class="upgrade-header"><span class="upgrade-badge">Mais 4 matérias por R$ 5</span><button id="upgrade-close" type="button" aria-label="Fechar oferta de upgrade">×</button></div>
+  <h2 id="upgrade-title">Espere! Por apenas R$ 5 a mais, leve as 11 matérias!</h2>
+  <p class="upgrade-copy" id="upgrade-description">Você escolheu o Plano Essencial com 7 matérias por R$ 9,90.</p>
+  <div class="upgrade-value"><span>Plano Completo · 11 matérias</span><strong id="upgrade-price">R$ 14,90</strong><p>Inclui também Matemática, Física, Química e Biologia. Você recebe as mesmas 11 matérias do Completo normal.</p></div>
+  <button class="cta upgrade-primary" id="upgrade-accept" type="button" disabled>QUERO AS 11 MATÉRIAS POR R$ 14,90</button>
+  <button class="upgrade-secondary" id="upgrade-decline" type="button" disabled>Continuar com 7 matérias por R$ 9,90</button>
+  <p id="upgrade-pending" data-dev>Os links de compra serão habilitados quando os checkouts forem configurados.</p>
+</dialog>
 <noscript>Ative o JavaScript para visualizar os planos e o carrossel desta prévia. As compras ainda não estão disponíveis.</noscript>
 <script>
 // Configuração centralizada. Prévia local; nenhuma integração ou rastreamento.
 const CONFIG = {
   mode: 'preview',
-  carouselIntervalMs: 2500, carouselTransitionMs: 400,
+  carouselCycleMs: 20000, // Duração de uma volta completa por todas as prévias.
+  carouselTransitionMs: 400, // Apenas para navegação manual pelas setas.
   CHECKOUT_ESSENCIAL_URL: '', CHECKOUT_COMPLETO_URL: '',
+  CHECKOUT_COMPLETO_UPGRADE_URL: '', // Checkout separado: o mesmo Completo por R$ 14,90.
+  upgradePrice: '14,90',
   accessDeliveryConfirmed: false, accessDeliveryText: '',
   guaranteeConfirmed: false, guaranteeDays: 7, guaranteeTermsText: 'Você tem 7 dias após a compra para conhecer o material. Caso não fique satisfeito, poderá solicitar o reembolso conforme as condições da garantia.',
   TERMS_URL: '', PRIVACY_URL: '', commercialInfo: '',
@@ -114,7 +146,7 @@ const CONFIG = {
   extraSubjects: ['Matemática','Física','Química','Biologia'],
   plans: [
     {name:'Completo', price:'19,90', type:'complete', checkoutKey:'CHECKOUT_COMPLETO_URL', imageKey:'MOCKUP_COMPLETO', description:'Para revisar também Matemática, Física, Química e Biologia, junto às 7 disciplinas do Essencial.'},
-    {name:'Essencial', price:'11,90', type:'essential', checkoutKey:'CHECKOUT_ESSENCIAL_URL', imageKey:'MOCKUP_ESSENCIAL', description:'Uma boa escolha para retomar conteúdos de Linguagens e Ciências Humanas por menos.'}
+    {name:'Essencial', price:'9,90', type:'essential', checkoutKey:'CHECKOUT_ESSENCIAL_URL', imageKey:'MOCKUP_ESSENCIAL', description:'Uma boa escolha para retomar conteúdos de Linguagens e Ciências Humanas por menos.'}
   ]
 };
 const validURL = value => {try{const u=new URL(value);return u.protocol==='https:'&&!!u.hostname&&!/example\.(com|org)|localhost/i.test(u.hostname)}catch{return false}};
@@ -127,8 +159,32 @@ for(const [index,key] of previewKeys.entries()){
 document.querySelector('#plan-cards').innerHTML=CONFIG.plans.map(plan=>{
   const complete=plan.type==='complete', subjects=complete?[...CONFIG.subjects,...CONFIG.extraSubjects]:CONFIG.subjects;
   const url=CONFIG[plan.checkoutKey],valid=validURL(url);
-  return `<article class="plan ${plan.type}"><span class="plan-label">${complete?'Melhor custo-benefício':'7 disciplinas para revisar'}</span><h3>Plano ${plan.name}</h3><p class="plan-desc">${plan.description}</p><div class="price"><span>R$</span>${plan.price}</div><p class="payment-note">Pagamento único · acesso vitalício</p>${complete?'<p class="difference">Por mais R$ 8,00, acrescente 4 disciplinas</p>':''}<div class="placeholder plan-placeholder" data-asset="${plan.imageKey}"><strong>Mockup do Plano ${plan.name}</strong><small>Imagem real a adicionar</small></div><p class="discipline-heading">${subjects.length} disciplinas incluídas</p><ul class="subjects">${subjects.map(s=>`<li class="${CONFIG.extraSubjects.includes(s)?'extra':''}">${s}</li>`).join('')}</ul><p class="plan-benefit">Pagamento único. PDFs para baixar e revisar quando precisar.</p><div class="purchase-area">${valid?`<a class="cta buy" href="${escapeHTML(url)}" rel="noopener">Quero o Plano ${plan.name}</a>`:`<button class="cta buy" disabled aria-describedby="pending-${plan.type}">Quero o Plano ${plan.name}</button><p class="checkout-warning" id="pending-${plan.type}" data-dev>Prévia: link de compra ainda não configurado.</p>`}</div></article>`;
+  const purchase=complete?(valid?`<a class="cta buy" href="${escapeHTML(url)}" rel="noopener">Quero o Plano ${plan.name}</a>`:`<button class="cta buy" disabled aria-describedby="pending-${plan.type}">Quero o Plano ${plan.name}</button>`):`<button class="cta buy" type="button" data-essential-upgrade aria-haspopup="dialog" aria-controls="essential-upgrade">Quero o Plano ${plan.name}</button>`;
+  const pending=valid?'':`<p class="checkout-warning" id="pending-${plan.type}" data-dev>Prévia: link de compra ainda não configurado.</p>`;
+  return `<article class="plan ${plan.type}"><span class="plan-label">${complete?'Melhor custo-benefício':'7 disciplinas para revisar'}</span><h3>Plano ${plan.name}</h3><p class="plan-desc">${plan.description}</p><div class="price"><span>R$</span>${plan.price}</div><p class="payment-note">Pagamento único · acesso vitalício</p>${complete?'<p class="difference">Por mais R$ 10,00, acrescente 4 disciplinas</p>':''}<div class="placeholder plan-placeholder" data-asset="${plan.imageKey}"><strong>Mockup do Plano ${plan.name}</strong><small>Imagem real a adicionar</small></div><p class="discipline-heading">${subjects.length} disciplinas incluídas</p><ul class="subjects">${subjects.map(s=>`<li class="${CONFIG.extraSubjects.includes(s)?'extra':''}">${s}</li>`).join('')}</ul><p class="plan-benefit">Pagamento único. PDFs para baixar e revisar quando precisar.</p><div class="purchase-area">${purchase}${pending}</div></article>`;
 }).join('');
+
+// Nenhum evento de Pixel é disparado aqui. Só o checkout escolhido realiza a navegação.
+const upgradeDialog=document.querySelector('#essential-upgrade');
+function configureUpgrade(){
+  const essential=CONFIG.plans.find(plan=>plan.type==='essential');
+  document.querySelector('#upgrade-description').textContent=`Você escolheu o Plano Essencial com 7 matérias por R$ ${essential.price}.`;
+  document.querySelector('#upgrade-price').textContent=`R$ ${CONFIG.upgradePrice}`;
+  document.querySelector('#upgrade-accept').textContent=`QUERO AS 11 MATÉRIAS POR R$ ${CONFIG.upgradePrice}`;
+  document.querySelector('#upgrade-decline').textContent=`Continuar com 7 matérias por R$ ${essential.price}`;
+  const acceptReady=validURL(CONFIG.CHECKOUT_COMPLETO_UPGRADE_URL),declineReady=validURL(CONFIG.CHECKOUT_ESSENCIAL_URL);
+  document.querySelector('#upgrade-accept').disabled=!acceptReady;document.querySelector('#upgrade-decline').disabled=!declineReady;
+  document.querySelector('#upgrade-pending').hidden=acceptReady&&declineReady;
+}
+configureUpgrade();
+document.querySelector('[data-essential-upgrade]').addEventListener('click',()=>{configureUpgrade();upgradeDialog.showModal();document.body.classList.add('upgrade-open')});
+function selectUpgradeCheckout(key){const url=CONFIG[key];if(!validURL(url))return;upgradeDialog.close();window.location.assign(url)}
+document.querySelector('#upgrade-accept').addEventListener('click',()=>selectUpgradeCheckout('CHECKOUT_COMPLETO_UPGRADE_URL'));
+document.querySelector('#upgrade-decline').addEventListener('click',()=>selectUpgradeCheckout('CHECKOUT_ESSENCIAL_URL'));
+document.querySelector('#upgrade-close').addEventListener('click',()=>upgradeDialog.close());
+upgradeDialog.addEventListener('close',()=>document.body.classList.remove('upgrade-open'));
+upgradeDialog.addEventListener('click',event=>{if(event.target===upgradeDialog){const r=upgradeDialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)upgradeDialog.close()}});
+
 for(const element of document.querySelectorAll('[data-asset]')){
   const key=element.dataset.asset,source=CONFIG.images[key];
   if(!source)continue;
@@ -249,99 +305,122 @@ const reviews=Object.values(CONFIG.testimonials).filter(r=>r&&r.name&&r.text);
 if(reviews.length){document.querySelector('#avaliacoes').hidden=false;for(const review of reviews){const el=document.createElement('article');el.className='slide testimonial';const person=document.createElement('div');person.className='review-person';if(review.photo){const img=document.createElement('img');img.src=review.photo;img.alt='';img.loading='lazy';person.append(img)}const name=document.createElement('strong');name.textContent=review.name;person.append(name);const body=document.createElement('p');body.textContent=review.text;el.append(person,body);document.querySelector('#reviews').append(el)}}
 for(const button of document.querySelectorAll('[data-carousel]:not([data-carousel="previews"])')){button.addEventListener('click',()=>{const track=document.getElementById(button.dataset.carousel);track.scrollBy({left:Number(button.dataset.direction)*(track.querySelector('.slide').getBoundingClientRect().width+14),behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'})})}
 for(const track of document.querySelectorAll('.carousel:not(#previews)')){const update=()=>{const max=track.scrollWidth-track.clientWidth;document.querySelectorAll(`[data-carousel="${track.id}"]`).forEach(b=>b.disabled=Number(b.dataset.direction)<0?track.scrollLeft<=1:track.scrollLeft>=max-1)};track.addEventListener('scroll',update,{passive:true});window.addEventListener('resize',update);update()}
-// Prévia: seis imagens únicas, três faixas idênticas para normalização invisível do loop.
-// Um único timeout controla o autoplay. O rAF existe apenas durante rolagens/ajustes.
+// Esteira exclusiva das prévias: três faixas visuais, seis arquivos únicos.
+// O navegador anima somente transform, com easing linear e sem timer por card.
 (()=>{
   const track=document.querySelector('#previews'),toggle=document.querySelector('#carousel-toggle');
   const originals=[...track.children],count=originals.length;
   if(count<2){toggle.hidden=true;return}
+  const belt=document.createElement('div');belt.className='preview-belt';
   function cloneBand(){const band=document.createDocumentFragment();for(const original of originals){
     const clone=original.cloneNode(true);clone.dataset.loopClone='';clone.setAttribute('aria-hidden','true');
     clone.querySelectorAll('[data-asset]').forEach(el=>el.removeAttribute('data-asset'));
     clone.querySelectorAll('[data-image-key]').forEach(button=>{button.dataset.loopImageKey=button.dataset.imageKey;delete button.dataset.imageKey;button.tabIndex=-1});
     clone.querySelectorAll('img').forEach(img=>{img.alt='';img.draggable=false});band.append(clone)
   }return band}
-  track.prepend(cloneBand());track.append(cloneBand());
+  belt.append(cloneBand());belt.append(...originals);belt.append(cloneBand());track.append(belt);
   originals.forEach(slide=>slide.querySelectorAll('img').forEach(img=>img.draggable=false));
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
-  const interval=CONFIG.carouselIntervalMs,manualWait=6000;
-  let timer=null,raf=null,visible=false,hover=false,pressed=false,userPaused=false,moving=false,rebasing=false;
-  let stride=0,base=0,cycle=0,nextDue=performance.now()+interval,manualUntil=0;
-  let stableFrames=0,lastPosition=0,animationFrame=null,animating=false;
-  let animationSnap="",animationBehavior="";
-  function measure(){const first=originals[0].getBoundingClientRect(),second=originals[1].getBoundingClientRect();stride=second.left-first.left;base=first.left-track.getBoundingClientRect().left+track.scrollLeft;cycle=stride*count}
-  function index(){return Math.round((track.scrollLeft-base)/stride)}
+  const duration=Math.max(1000,Number(CONFIG.carouselCycleMs)||20000);
+  let animation=null,navigation=null,stride=0,cycle=0,assetsReady=false,assetsRequested=false;
+  let visible=false,hover=false,pressed=false,userPaused=false,keyboardFocus=false,pointer=null,suppressClickUntil=0;
+  const wrap=value=>((value%1)+1)%1;
+  const phase=()=>animation?wrap((Number(animation.currentTime)||0)/duration):0;
+  function setPhase(value){if(animation)animation.currentTime=wrap(value)*duration}
+  function blocked(){return !visible||!assetsReady||document.hidden||hover||pressed||keyboardFocus||viewer.open||previewViewer.open||userPaused||reduced.matches||!!navigation}
+  function syncPlayback(){
+    if(!animation)return;
+    if(blocked()){if(animation.playState!=='paused'){const held=animation.currentTime;animation.pause();animation.currentTime=held}}
+    else if(animation.playState!=='running')animation.play();
+    track.dataset.motionState=animation.playState;
+  }
   function buttonState(){toggle.textContent=userPaused||reduced.matches?'Reproduzir':'Pausar';toggle.disabled=reduced.matches;toggle.setAttribute('aria-pressed',String(userPaused||reduced.matches));toggle.setAttribute('aria-label',reduced.matches?'Passagem automática desativada pela preferência de movimento reduzido':userPaused?'Iniciar passagem automática das páginas':'Pausar passagem automática das páginas')}
-  function blocked(){return !visible||document.hidden||hover||pressed||viewer.open||previewViewer.open||userPaused||reduced.matches||moving||rebasing}
-  function schedule(){
-    clearTimeout(timer);timer=null;if(blocked())return;
-    const now=performance.now(),due=manualUntil>now?manualUntil:nextDue;
-    timer=setTimeout(()=>{timer=null;if(blocked())return;step(1);nextDue=performance.now()+interval},Math.max(0,due-now));
+  function cancelNavigation(){
+    if(!navigation)return;
+    // Uma única leitura na interrupção manual, nunca durante o movimento automático.
+    const transform=new DOMMatrixReadOnly(getComputedStyle(belt).transform);
+    const frozenPhase=wrap((-transform.m41-cycle)/cycle),old=navigation;
+    navigation=null;setPhase(frozenPhase);old.cancel();
   }
-  function reposition(left){
-    rebasing=true;const snap=track.style.scrollSnapType,behavior=track.style.scrollBehavior;
-    track.style.scrollSnapType='none';track.style.scrollBehavior='auto';track.scrollTo({left,behavior:'instant'});
-    // Restaura o snap no quadro seguinte, após a faixa equivalente já estar posicionada.
-    requestAnimationFrame(()=>{track.style.scrollSnapType=snap;track.style.scrollBehavior=behavior;rebasing=false;track.dataset.activePreview=String(((index()%count)+count)%count+1);schedule()});
+  function measure(){
+    cancelNavigation();const current=phase();if(animation)animation.cancel();
+    const first=originals[0].getBoundingClientRect(),second=originals[1].getBoundingClientRect();
+    stride=second.left-first.left;cycle=stride*count;if(cycle<=0)return;
+    animation=belt.animate([{transform:`translateX(${-cycle}px)`},{transform:`translateX(${-2*cycle}px)`}],{duration,iterations:Infinity,easing:'linear'});
+    animation.id='revisaja-preview-marquee';animation.pause();setPhase(current);
+    belt.dataset.cyclePx=String(cycle);belt.dataset.cycleMs=String(duration);syncPlayback();
   }
-  function normalize(){
-    if(!cycle)return;
-    let left=track.scrollLeft;while(left<base-1)left+=cycle;while(left>=base+cycle-1)left-=cycle;
-    if(Math.abs(left-track.scrollLeft)>1)reposition(left);
-    else track.dataset.activePreview=String(((index()%count)+count)%count+1);
+  function navigate(distance){
+    cancelNavigation();if(!animation||!cycle)return;
+    animation.pause();const from=cycle*(1+phase()),target=from+distance;
+    if(reduced.matches){setPhase((target-cycle)/cycle);syncPlayback();return}
+    const effect=belt.animate([{transform:`translateX(${-from}px)`},{transform:`translateX(${-target}px)`}],{duration:CONFIG.carouselTransitionMs,easing:'ease-out',fill:'forwards'});
+    navigation=effect;effect.id='revisaja-preview-manual';syncPlayback();
+    effect.addEventListener('finish',()=>{if(navigation!==effect)return;setPhase((target-cycle)/cycle);navigation=null;effect.cancel();syncPlayback()});
   }
-  function settle(){if(raf!==null){cancelAnimationFrame(raf);raf=null}moving=false;normalize();schedule()}
-  function watchScroll(){
-    if(rebasing||animating)return;moving=true;clearTimeout(timer);timer=null;
-    if(raf!==null)return;stableFrames=0;lastPosition=track.scrollLeft;
-    const poll=()=>{if(rebasing){raf=null;return}const x=track.scrollLeft;stableFrames=Math.abs(x-lastPosition)<.3?stableFrames+1:0;lastPosition=x;
-      if(stableFrames>=4){raf=null;settle()}else raf=requestAnimationFrame(poll)};
-    raf=requestAnimationFrame(poll);
+  for(const button of document.querySelectorAll('[data-carousel="previews"]')){button.disabled=false;button.addEventListener('click',()=>navigate(Number(button.dataset.direction)*stride))}
+  track.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse'){hover=true;syncPlayback()}});
+  track.addEventListener('pointerleave',event=>{if(event.pointerType==='mouse'){hover=false;syncPlayback()}});
+  track.addEventListener('pointerdown',event=>{
+    if(pointer||(event.pointerType==='mouse'&&event.button!==0))return;
+    cancelNavigation();keyboardFocus=false;pressed=true;syncPlayback();
+    pointer={id:event.pointerId,x:event.clientX,y:event.clientY,phase:phase(),dragged:false};
+  });
+  track.addEventListener('pointermove',event=>{
+    if(!pointer||event.pointerId!==pointer.id)return;
+    const dx=event.clientX-pointer.x,dy=event.clientY-pointer.y;
+    if(!pointer.dragged&&Math.abs(dx)>8&&Math.abs(dx)>Math.abs(dy)){pointer.dragged=true;track.setPointerCapture(event.pointerId)}
+    if(pointer.dragged){event.preventDefault();setPhase(pointer.phase-dx/cycle)}
+  },{passive:false});
+  function release(event){
+    if(!pointer||event.pointerId!==pointer.id)return;
+    if(pointer.dragged)suppressClickUntil=performance.now()+350;
+    const id=pointer.id;pointer=null;pressed=false;
+    if(track.hasPointerCapture(id))track.releasePointerCapture(id);syncPlayback();
   }
-  function cancelAnimation(){
-    if(animationFrame!==null){cancelAnimationFrame(animationFrame);animationFrame=null}
-    if(animating){track.style.scrollSnapType=animationSnap;track.style.scrollBehavior=animationBehavior;animating=false;moving=false}
+  window.addEventListener('pointerup',release);window.addEventListener('pointercancel',release);track.addEventListener('lostpointercapture',event=>{if(event.target===track)release(event)});
+  // Arrastar não deve também abrir a página ao soltar o dedo ou mouse.
+  track.addEventListener('click',event=>{if(performance.now()<suppressClickUntil){event.preventDefault();event.stopImmediatePropagation()}},{capture:true});
+  track.addEventListener('click',event=>{const clone=event.target.closest('[data-loop-image-key]');if(clone)openImageViewer(clone.dataset.loopImageKey)});
+  track.addEventListener('wheel',event=>{
+    const horizontal=Math.abs(event.deltaX)>Math.abs(event.deltaY)?event.deltaX:event.shiftKey?event.deltaY:0;
+    if(!horizontal)return;event.preventDefault();cancelNavigation();
+    const unit=event.deltaMode===1?16:event.deltaMode===2?track.clientWidth:1;
+    setPhase(phase()+horizontal*unit/cycle);syncPlayback();
+  },{passive:false});
+  track.addEventListener('focusin',event=>{
+    if(!event.target.matches(':focus-visible'))return;
+    keyboardFocus=true;cancelNavigation();syncPlayback();
+    const item=event.target.closest('.slide'),index=originals.indexOf(item);if(index>=0)setPhase(index/count);
+  });
+  track.addEventListener('focusout',event=>{if(!track.contains(event.relatedTarget)){keyboardFocus=false;syncPlayback()}});
+  track.addEventListener('keydown',event=>{
+    if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
+    event.preventDefault();keyboardFocus=true;
+    if(event.key==='Home'||event.key==='End'){cancelNavigation();setPhase(event.key==='Home'?0:(count-1)/count);syncPlayback()}
+    else navigate((event.key==='ArrowLeft'?-1:1)*stride);
+  });
+  toggle.addEventListener('click',()=>{userPaused=!userPaused;buttonState();syncPlayback()});
+  previewViewer.addEventListener('preview-open',()=>{cancelNavigation();syncPlayback()});
+  for(const modal of [viewer,previewViewer])modal.addEventListener('close',()=>{keyboardFocus=false;syncPlayback()});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelNavigation();syncPlayback()});
+  reduced.addEventListener('change',()=>{cancelNavigation();buttonState();syncPlayback()});
+  function visibility(value){
+    visible=value;
+    if(visible&&!assetsRequested){
+      assetsRequested=true;const images=[...belt.querySelectorAll('img')];
+      // Só ao entrar na tela: elimina o atraso do lazy nas cópias que chegam ao loop.
+      // Os URLs são os mesmos seis arquivos; o navegador compartilha download e cache.
+      images.forEach(img=>img.loading='eager');
+      Promise.allSettled(images.map(img=>img.decode())).then(()=>{assetsReady=true;syncPlayback()});
+    }
+    if(!visible)cancelNavigation();syncPlayback();
   }
-  function step(direction){
-    cancelAnimation();moving=true;clearTimeout(timer);timer=null;
-    if(raf!==null){cancelAnimationFrame(raf);raf=null}
-    const target=base+(index()+direction)*stride;
-    if(reduced.matches){track.scrollTo({left:target,behavior:'instant'});moving=false;normalize();schedule();return}
-    const from=track.scrollLeft,started=performance.now(),duration=CONFIG.carouselTransitionMs;
-    animationSnap=track.style.scrollSnapType;animationBehavior=track.style.scrollBehavior;
-    track.style.scrollSnapType='none';track.style.scrollBehavior='auto';animating=true;
-    const animate=now=>{
-      const progress=Math.min(1,(now-started)/duration),eased=(1-Math.cos(Math.PI*progress))/2;
-      track.scrollTo({left:from+(target-from)*eased,behavior:'instant'});
-      if(progress<1)animationFrame=requestAnimationFrame(animate);
-      else {animationFrame=null;animating=false;moving=false;track.style.scrollSnapType=animationSnap;track.style.scrollBehavior=animationBehavior;normalize();schedule()}
-    };
-    animationFrame=requestAnimationFrame(animate);
-  }
-  function interacted(){manualUntil=performance.now()+manualWait;nextDue=manualUntil;schedule()}
-  track.addEventListener('scroll',watchScroll,{passive:true});
-  track.addEventListener('scrollend',()=>{if(!rebasing&&!animating)settle()});
-  for(const button of document.querySelectorAll('[data-carousel="previews"]')){button.disabled=false;button.addEventListener('click',()=>{interacted();step(Number(button.dataset.direction))})}
-  track.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse'){hover=true;schedule()}});
-  track.addEventListener('pointerleave',event=>{if(event.pointerType==='mouse'){hover=false;nextDue=performance.now()+interval;schedule()}});
-  track.addEventListener('pointerdown',event=>{cancelAnimation();pressed=true;interacted();if(event.pointerType==='mouse'&&event.target.closest('[data-loop-image-key]'))event.preventDefault()},{passive:false});
-  window.addEventListener('pointerup',()=>{if(pressed){pressed=false;interacted()}});
-  window.addEventListener('pointercancel',()=>{if(pressed){pressed=false;interacted()}});
-  track.addEventListener('touchend',interacted,{passive:true});
-  track.addEventListener('wheel',()=>{cancelAnimation();interacted()},{passive:true});
-  track.addEventListener('focusin',interacted);
-  track.addEventListener('keydown',event=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(event.key))interacted()});
-  track.addEventListener('click',event=>{const clone=event.target.closest('[data-loop-image-key]');if(clone)openImageViewer(clone.dataset.loopImageKey);schedule()});
-  toggle.addEventListener('click',()=>{userPaused=!userPaused;manualUntil=0;nextDue=performance.now()+interval;buttonState();schedule()});
-  previewViewer.addEventListener('preview-open',()=>{cancelAnimation();clearTimeout(timer);timer=null});
-  for(const modal of [viewer,previewViewer])modal.addEventListener('close',()=>{manualUntil=0;nextDue=performance.now()+interval;schedule()});
-  document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelAnimation();nextDue=performance.now()+interval;schedule()});
-  reduced.addEventListener('change',()=>{cancelAnimation();buttonState();nextDue=performance.now()+interval;schedule()});
-  function visibility(value){if(visible===value)return;visible=value;if(!visible)cancelAnimation();nextDue=performance.now()+interval;schedule()}
-  if('IntersectionObserver' in window)new IntersectionObserver(entries=>visibility(entries[0].isIntersecting),{threshold:.05}).observe(track);
+  if('IntersectionObserver' in window)new IntersectionObserver(entries=>visibility(entries[0].isIntersecting),{threshold:0}).observe(track);
   else {const check=()=>{const r=track.getBoundingClientRect();visibility(r.bottom>0&&r.top<innerHeight)};window.addEventListener('scroll',check,{passive:true});check()}
-  window.addEventListener('resize',()=>{cancelAnimation();const current=((index()%count)+count)%count;measure();moving=false;reposition(base+current*stride)});
-  measure();reposition(base);buttonState();
+  // ResizeObserver mantém a posição relativa ao ajustar a largura, inclusive na orientação mobile.
+  if('ResizeObserver' in window)new ResizeObserver(measure).observe(track);else window.addEventListener('resize',measure);
+  measure();buttonState();
 })();
 if(CONFIG.accessDeliveryConfirmed&&CONFIG.accessDeliveryText)document.querySelector('#access-answer').textContent=CONFIG.accessDeliveryText;
 // A garantia é visível na prévia. O preflight continua exigindo validação real no checkout.
@@ -350,7 +429,7 @@ if(CONFIG.guaranteeConfirmed&&CONFIG.guaranteeTermsText.trim()){
 }
 for(const [key,label] of [['TERMS_URL','Termos de uso'],['PRIVACY_URL','Política de privacidade']]){if(validURL(CONFIG[key])){const a=document.createElement('a');a.href=CONFIG[key];a.textContent=label;a.style.marginRight='14px';document.querySelector('#legal-links').append(a)}}
 if(CONFIG.commercialInfo){const c=document.querySelector('#commercial-info');c.hidden=false;c.textContent=CONFIG.commercialInfo}
-function publicationIssues(){const issues=[];for(const key of ['CHECKOUT_ESSENCIAL_URL','CHECKOUT_COMPLETO_URL'])if(!validURL(CONFIG[key]))issues.push(key+' não configurado.');for(const [key,value]of Object.entries(CONFIG.images))if(!value)issues.push(key+' aguardando imagem real.');if(!CONFIG.accessDeliveryConfirmed||!CONFIG.accessDeliveryText.trim())issues.push('Confirmar e configurar como o link de acesso será enviado.');if(!CONFIG.guaranteeConfirmed||!CONFIG.guaranteeTermsText.trim())issues.push('Validar a política de reembolso de 7 dias no checkout antes da publicação.');if(!validURL(CONFIG.TERMS_URL)||!validURL(CONFIG.PRIVACY_URL))issues.push('Fornecer termos de uso e política de privacidade.');if(!CONFIG.commercialInfo)issues.push('Fornecer os dados comerciais aplicáveis.');return issues}
+function publicationIssues(){const issues=[];for(const key of ['CHECKOUT_ESSENCIAL_URL','CHECKOUT_COMPLETO_URL','CHECKOUT_COMPLETO_UPGRADE_URL'])if(!validURL(CONFIG[key]))issues.push(key+' não configurado.');for(const [key,value]of Object.entries(CONFIG.images))if(!value)issues.push(key+' aguardando imagem real.');if(!CONFIG.accessDeliveryConfirmed||!CONFIG.accessDeliveryText.trim())issues.push('Confirmar e configurar como o link de acesso será enviado.');if(!CONFIG.guaranteeConfirmed||!CONFIG.guaranteeTermsText.trim())issues.push('Validar a política de reembolso de 7 dias no checkout antes da publicação.');if(!validURL(CONFIG.TERMS_URL)||!validURL(CONFIG.PRIVACY_URL))issues.push('Fornecer termos de uso e política de privacidade.');if(!CONFIG.commercialInfo)issues.push('Fornecer os dados comerciais aplicáveis.');return issues}
 window.REVISAJA_VALIDATION={publicationIssues,assertReady(){const issues=publicationIssues();if(issues.length)throw new Error('Publicação bloqueada: '+issues.join(' '));return true}};
 if(CONFIG.mode==='production'){window.REVISAJA_VALIDATION.assertReady();document.querySelectorAll('[data-dev]').forEach(el=>el.remove());document.querySelector('.gallery-hint').textContent='Deslize para explorar. Toque nas páginas para ampliar.';document.querySelector('meta[name="robots"]').remove();document.title='RevisaJá ENEM — Biblioteca digital de resumos'}
 </script>
